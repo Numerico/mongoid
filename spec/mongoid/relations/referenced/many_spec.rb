@@ -1460,6 +1460,33 @@ describe Mongoid::Relations::Referenced::Many do
 
   describe "#create" do
 
+    context "when providing multiple attributes" do
+
+      let(:person) do
+        Person.create
+      end
+
+      let!(:posts) do
+        person.posts.create([{ text: "Test1" }, { text: "Test2" }])
+      end
+
+      it "creates multiple documents" do
+        expect(posts.size).to eq(2)
+      end
+
+      it "sets the first attributes" do
+        expect(posts.first.text).to eq("Test1")
+      end
+
+      it "sets the second attributes" do
+        expect(posts.last.text).to eq("Test2")
+      end
+
+      it "persists the children" do
+        expect(person.posts.count).to eq(2)
+      end
+    end
+
     context "when the relation is not polymorphic" do
 
       context "when the parent is a new record" do
@@ -1618,6 +1645,33 @@ describe Mongoid::Relations::Referenced::Many do
   end
 
   describe "#create!" do
+
+    context "when providing multiple attributes" do
+
+      let(:person) do
+        Person.create
+      end
+
+      let!(:posts) do
+        person.posts.create!([{ text: "Test1" }, { text: "Test2" }])
+      end
+
+      it "creates multiple documents" do
+        expect(posts.size).to eq(2)
+      end
+
+      it "sets the first attributes" do
+        expect(posts.first.text).to eq("Test1")
+      end
+
+      it "sets the second attributes" do
+        expect(posts.last.text).to eq("Test2")
+      end
+
+      it "persists the children" do
+        expect(person.posts.count).to eq(2)
+      end
+    end
 
     context "when the relation is not polymorphic" do
 
@@ -2065,7 +2119,7 @@ describe Mongoid::Relations::Referenced::Many do
       end
 
       it "returns true" do
-        expect(person.posts.exists?).to be_true
+        expect(person.posts.exists?).to be true
       end
     end
 
@@ -2076,7 +2130,7 @@ describe Mongoid::Relations::Referenced::Many do
       end
 
       it "returns false" do
-        expect(person.posts.exists?).to be_false
+        expect(person.posts.exists?).to be false
       end
     end
   end
@@ -2902,7 +2956,7 @@ describe Mongoid::Relations::Referenced::Many do
       context "when checking #{method}" do
 
         it "returns true" do
-          expect(posts.respond_to?(method)).to be_true
+          expect(posts.respond_to?(method)).to be true
         end
       end
     end
@@ -2912,7 +2966,7 @@ describe Mongoid::Relations::Referenced::Many do
       context "when checking #{method}" do
 
         it "returns true" do
-          expect(posts.respond_to?(method)).to be_true
+          expect(posts.respond_to?(method)).to be true
         end
       end
     end
@@ -2922,7 +2976,7 @@ describe Mongoid::Relations::Referenced::Many do
       context "when checking #{method}" do
 
         it "returns true" do
-          expect(posts.respond_to?(method)).to be_true
+          expect(posts.respond_to?(method)).to be true
         end
       end
     end
@@ -2931,7 +2985,7 @@ describe Mongoid::Relations::Referenced::Many do
   describe ".stores_foreign_key?" do
 
     it "returns false" do
-      expect(described_class.stores_foreign_key?).to be_false
+      expect(described_class.stores_foreign_key?).to be false
     end
   end
 
@@ -3063,7 +3117,7 @@ describe Mongoid::Relations::Referenced::Many do
   describe ".validation_default" do
 
     it "returns true" do
-      expect(described_class.validation_default).to be_true
+      expect(described_class.validation_default).to be true
     end
   end
 
@@ -3217,11 +3271,11 @@ describe Mongoid::Relations::Referenced::Many do
       end
 
       it "it executes method callbacks" do
-        expect(artist.before_add_referenced_called).to be_true
+        expect(artist.before_add_referenced_called).to be true
       end
 
       it "it executes proc callbacks" do
-        expect(album.before_add_called).to be_true
+        expect(album.before_add_called).to be true
       end
 
       it "adds the document to the relation" do
@@ -3256,7 +3310,7 @@ describe Mongoid::Relations::Referenced::Many do
 
     it "executes the callback" do
       artist.albums << album
-      expect(artist.after_add_referenced_called).to be_true
+      expect(artist.after_add_referenced_called).to be true
     end
 
     context "when execution raises errors" do
@@ -3297,7 +3351,7 @@ describe Mongoid::Relations::Referenced::Many do
         end
 
         it "executes the callback" do
-          expect(artist.before_remove_referenced_called).to be_true
+          expect(artist.before_remove_referenced_called).to be true
         end
 
         it "removes the document from the relation" do
@@ -3312,7 +3366,7 @@ describe Mongoid::Relations::Referenced::Many do
         end
 
         it "executes the callback" do
-          expect(artist.before_remove_referenced_called).to be_true
+          expect(artist.before_remove_referenced_called).to be true
         end
 
         it "clears the relation" do
@@ -3378,7 +3432,7 @@ describe Mongoid::Relations::Referenced::Many do
         end
 
         it "executes the callback" do
-          expect(artist.after_remove_referenced_called).to be_true
+          expect(artist.after_remove_referenced_called).to be true
         end
       end
 
@@ -3390,7 +3444,7 @@ describe Mongoid::Relations::Referenced::Many do
 
         it "executes the callback" do
           artist.albums.clear
-          expect(artist.after_remove_referenced_called).to be_true
+          expect(artist.after_remove_referenced_called).to be true
         end
       end
     end

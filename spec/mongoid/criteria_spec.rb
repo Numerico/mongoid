@@ -87,14 +87,14 @@ describe Mongoid::Criteria do
       end
 
       it "returns true" do
-        expect(described_class === other).to be_true
+        expect(described_class === other).to be true
       end
     end
 
     context "when the other is not a criteria" do
 
       it "returns false" do
-        expect(described_class === []).to be_false
+        expect(described_class === []).to be false
       end
     end
   end
@@ -686,7 +686,7 @@ describe Mongoid::Criteria do
       end
 
       it "returns true" do
-        expect(criteria.exists?).to be_true
+        expect(criteria.exists?).to be true
       end
     end
 
@@ -697,7 +697,7 @@ describe Mongoid::Criteria do
       end
 
       it "returns false" do
-        expect(criteria.exists?).to be_false
+        expect(criteria.exists?).to be false
       end
     end
   end
@@ -2649,7 +2649,7 @@ describe Mongoid::Criteria do
 
         it "only limits the fields on the correct criteria" do
           criteria.each do |band|
-            expect(Band.new.active).to be_true
+            expect(Band.new.active).to be true
           end
         end
       end
@@ -2663,7 +2663,7 @@ describe Mongoid::Criteria do
         it "only limits the fields on the correct criteria" do
           criteria.each do |band|
             Band.all.each do |b|
-              expect(b.active).to be_true
+              expect(b.active).to be true
             end
           end
         end
@@ -2887,7 +2887,7 @@ describe Mongoid::Criteria do
       context "when including private methods" do
 
         it "returns true" do
-          expect(criteria.respond_to?(:for_ids, true)).to be_true
+          expect(criteria.respond_to?(:for_ids, true)).to be true
         end
       end
     end
@@ -2895,7 +2895,7 @@ describe Mongoid::Criteria do
     context "when asking about a model class public instance method" do
 
       it "returns true" do
-        expect(criteria.respond_to?(:join)).to be_true
+        expect(criteria.respond_to?(:join)).to be true
       end
     end
 
@@ -2911,7 +2911,7 @@ describe Mongoid::Criteria do
       context "when including private methods" do
 
         it "returns true" do
-          expect(criteria.respond_to?(:fork, true)).to be_true
+          expect(criteria.respond_to?(:fork, true)).to be true
         end
       end
     end
@@ -2935,7 +2935,7 @@ describe Mongoid::Criteria do
       context "when including private methods" do
 
         it "returns true" do
-          expect(criteria.respond_to?(:puts, true)).to be_true
+          expect(criteria.respond_to?(:puts, true)).to be true
         end
       end
     end
@@ -3332,81 +3332,27 @@ describe Mongoid::Criteria do
     end
   end
 
-  describe "#within_box" do
+  describe "#geo_spacial" do
 
-    before do
-      Bar.create_indexes
-    end
+    context "when checking within a polygon" do
 
-    let!(:match) do
-      Bar.create(location: [ 52.30, 13.25 ])
-    end
+      before do
+        Bar.create_indexes
+      end
 
-    let(:criteria) do
-      Bar.within_box(location: [[ 50, 10 ], [ 60, 20 ]])
-    end
+      let!(:match) do
+        Bar.create(location: [ 52.30, 13.25 ])
+      end
 
-    it "returns the matching documents" do
-      expect(criteria).to eq([ match ])
-    end
-  end
+      let(:criteria) do
+        Bar.geo_spacial(
+          :location.within_polygon => [[[ 50, 10 ], [ 50, 20 ], [ 60, 20 ], [ 60, 10 ], [ 50, 10 ]]]
+        )
+      end
 
-  describe "#within_circle" do
-
-    before do
-      Bar.create_indexes
-    end
-
-    let!(:match) do
-      Bar.create(location: [ 52.30, 13.25 ])
-    end
-
-    let(:criteria) do
-      Bar.within_circle(location: [[ 52, 13 ], 0.5 ])
-    end
-
-    it "returns the matching documents" do
-      expect(criteria).to eq([ match ])
-    end
-  end
-
-  describe "#within_polygon" do
-
-    before do
-      Bar.create_indexes
-    end
-
-    let!(:match) do
-      Bar.create(location: [ 52.30, 13.25 ])
-    end
-
-    let(:criteria) do
-      Bar.within_polygon(
-        location: [[ 50, 10 ], [ 50, 20 ], [ 60, 20 ], [ 60, 10 ]]
-      )
-    end
-
-    it "returns the matching documents" do
-      expect(criteria).to eq([ match ])
-    end
-  end
-
-  describe "#within_spherical_circle" do
-
-    before do
-      Bar.create_indexes
-    end
-
-    let!(:match) do
-      Bar.create(location: [ 52.30, 13.25 ])
-    end
-
-    let(:criteria) do
-      Bar.within_spherical_circle(location: [[ 52, 13 ], 0.5 ])
-    end
-
-    it "returns the matching documents" do
-      expect(criteria).to eq([ match ])
+      it "returns the matching documents" do
+        expect(criteria).to eq([ match ])
+      end
     end
   end
 

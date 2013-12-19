@@ -7,6 +7,14 @@ For instructions on upgrading to newer versions, visit
 
 ### Major Changes (Backwards Incompatible)
 
+* `skip_version_check` config option was removed.
+
+* IdentityMap removed. (Arthur Neves)
+
+* Eager load rework. Eager load now doesnt need the identity map to load
+  related documents. A set of preloaders can eager load the associations
+  passed to .includes method. (Arthur Neves)
+
 * Mongoid now supports the new read preferences that the core drivers
   provide. These include:
 
@@ -33,7 +41,7 @@ For instructions on upgrading to newer versions, visit
 
     Sample syntax:
 
-        Person.with(write: {w: :majority}).create!(name: "John)
+        Person.with(write: {w: :majority}).create!(name: "John")
 
     The `:safe` option is no longer valid use the `:write` option now.
 
@@ -103,6 +111,12 @@ For instructions on upgrading to newer versions, visit
   single document atomic API, for example:
 
         Band.where(name: "Depeche Mode").inc(likes: 10, followers: 20)
+
+* \#3399 #create and #create! on relations can now take an array of attributes as
+  the first parameter to create multiple documents at once.
+
+        person.addresses.create([{ street: "Bond" }, { street: "Upper" }])
+        person.addresses.create!([{ street: "Bond" }, { street: "Upper" }])
 
 * \#3141 `rake db:test:prepare` now sets up all defined indexes if Mongoid is the
   only ODM/ORM in the environment.
@@ -278,6 +292,8 @@ For instructions on upgrading to newer versions, visit
 * \#2855 Multiple extensions can now be supplied to relations. (Daniel Libanori)
 
 ### Resolved Issues
+
+* \#3397 Fixed $ne matcher for embedded documents to match server behaviour.
 
 * \#3348 Fixing compounded indexes having the same keys with
   different directions. (Arthur Neves)

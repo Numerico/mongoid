@@ -1,17 +1,18 @@
-module Helpers
+require 'mongoid/support/query_counter'
 
-  def expect_query(number)
-    events = []
-
-    subscriber = ActiveSupport::Notifications.subscribe('query.moped') do |*args|
-      events << ActiveSupport::Notifications::Event.new(*args)
-    end
-    yield
-    expect(events.size).to(eq(number), %[
-Expected to receive #{number} queries, it received #{events.size}
-#{events.map { |e| e.payload[:ops].map(&:log_inspect) }.join("\n")}
+module Mongoid
+  module SpecHelpers
+    def expect_query(number, &block)
+      query_counter = Mongoid::QueryCounter.new
+      query_counter.instrument(&block)
+      expect(query_counter.events.size).to(eq(number), %[
+Expected to receive #{number} queries, it received #{query_counter.events.size}
+#{query_counter.inspect}
 ])
-  ensure
-    ActiveSupport::Notifications.unsubscribe(subscriber)
+    end
+
+    def expect_no_queries(&block)
+      expect_query(0, &block)
+    end
   end
 end

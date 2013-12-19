@@ -281,35 +281,6 @@ describe Mongoid::Relations::Referenced::ManyToMany do
               expect(person.reload.preferences).to eq([ preference ])
             end
           end
-
-          pending "when the identity map is enabled [ Github-3015 ]" do
-
-            let(:dungeon) do
-              Dungeon.new
-            end
-
-            let(:dragon) do
-              Dragon.new
-            end
-
-            before do
-              dungeon.save!
-              dragon.dungeons.send(method, dungeon)
-              dragon.save!
-            end
-
-            it "sets the proper length of the child" do
-              expect(dragon.dungeons.length).to eq(1)
-            end
-
-            it "sets the proper number of foreign keys" do
-              expect(dungeon.dragon_ids.length).to eq(1)
-            end
-
-            it "sets the proper number of parent docs" do
-              expect(dungeon.dragons.length).to eq(1)
-            end
-          end
         end
 
         context "when the parent is not a new record" do
@@ -538,7 +509,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
 
           it "executes the callback" do
             post.tags.send(method, tag)
-            expect(post.before_add_called).to be_true
+            expect(post.before_add_called).to be true
           end
 
           context "when errors are raised" do
@@ -560,7 +531,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
 
           it "executes the callback" do
             post.tags.send(method, tag)
-            expect(post.after_add_called).to be_true
+            expect(post.after_add_called).to be true
           end
 
           context "when errors are raised" do
@@ -1203,7 +1174,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
           end
 
           it "executes the callback" do
-            expect(post.before_remove_called).to be_true
+            expect(post.before_remove_called).to be true
           end
 
           it "removes the document from the relation" do
@@ -1235,7 +1206,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
           end
 
           it "executes the callback" do
-            expect(post.after_remove_called).to be_true
+            expect(post.after_remove_called).to be true
           end
 
           it "removes the document from the relation" do
@@ -2018,7 +1989,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
         end
 
         it "deletes the document" do
-          expect(event.delete).to be_true
+          expect(event.delete).to be true
         end
       end
     end
@@ -2137,7 +2108,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
           end
 
           it "executes the callback" do
-            expect(post.before_remove_called).to be_true
+            expect(post.before_remove_called).to be true
           end
 
           it "removes the document from the relation" do
@@ -2169,7 +2140,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
           end
 
           it "executes the callback" do
-            expect(post.after_remove_called).to be_true
+            expect(post.after_remove_called).to be true
           end
 
           it "removes the document from the relation" do
@@ -2287,7 +2258,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
       end
 
       it "returns true" do
-        expect(person.preferences.exists?).to be_true
+        expect(person.preferences.exists?).to be true
       end
     end
 
@@ -2298,7 +2269,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
       end
 
       it "returns false" do
-        expect(person.preferences.exists?).to be_false
+        expect(person.preferences.exists?).to be false
       end
     end
   end
@@ -2819,7 +2790,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
       context "when checking #{method}" do
 
         it "returns true" do
-          expect(preferences.respond_to?(method)).to be_true
+          expect(preferences.respond_to?(method)).to be true
         end
       end
     end
@@ -2829,7 +2800,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
       context "when checking #{method}" do
 
         it "returns true" do
-          expect(preferences.respond_to?(method)).to be_true
+          expect(preferences.respond_to?(method)).to be true
         end
       end
     end
@@ -2839,7 +2810,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
       context "when checking #{method}" do
 
         it "returns true" do
-          expect(preferences.respond_to?(method)).to be_true
+          expect(preferences.respond_to?(method)).to be true
         end
       end
     end
@@ -2848,7 +2819,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
   describe ".stores_foreign_key?" do
 
     it "returns true" do
-      expect(described_class.stores_foreign_key?).to be_true
+      expect(described_class.stores_foreign_key?).to be true
     end
   end
 
@@ -2980,7 +2951,7 @@ describe Mongoid::Relations::Referenced::ManyToMany do
   describe ".validation_default" do
 
     it "returns true" do
-      expect(described_class.validation_default).to be_true
+      expect(described_class.validation_default).to be true
     end
   end
 

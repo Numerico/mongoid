@@ -352,11 +352,11 @@ describe Mongoid::Changeable do
       end
 
       it "returns true" do
-        expect(person.send(:attribute_changed?, "title")).to be_true
+        expect(person.send(:attribute_changed?, "title")).to be true
       end
 
       it "allows access via (attribute)_changed?" do
-        expect(person.title_changed?).to be_true
+        expect(person.title_changed?).to be true
       end
 
       context "when the field is aliased" do
@@ -370,11 +370,11 @@ describe Mongoid::Changeable do
         end
 
         it "returns true" do
-          expect(person.send(:attribute_changed?, "test")).to be_true
+          expect(person.send(:attribute_changed?, "test")).to be true
         end
 
         it "allows access via (attribute)_changed?" do
-          expect(person.test_changed?).to be_true
+          expect(person.test_changed?).to be true
         end
       end
     end
@@ -390,11 +390,11 @@ describe Mongoid::Changeable do
       end
 
       it "returns true" do
-        expect(person.send(:attribute_changed?, "pets")).to be_true
+        expect(person.send(:attribute_changed?, "pets")).to be true
       end
 
       it "allows access via (attribute)_changed?" do
-        expect(person.pets_changed?).to be_true
+        expect(person.pets_changed?).to be true
       end
     end
 
@@ -405,7 +405,7 @@ describe Mongoid::Changeable do
       end
 
       it "returns false" do
-        expect(person.send(:attribute_changed?, "title")).to be_false
+        expect(person.send(:attribute_changed?, "title")).to be false
       end
     end
 
@@ -420,7 +420,7 @@ describe Mongoid::Changeable do
           end
 
           it "returns true" do
-            expect(person.send(:attribute_changed?, "pets")).to be_true
+            expect(person.send(:attribute_changed?, "pets")).to be true
           end
         end
 
@@ -431,7 +431,7 @@ describe Mongoid::Changeable do
           end
 
           it "returns false" do
-            expect(person.send(:attribute_changed?, "pets")).to be_false
+            expect(person.send(:attribute_changed?, "pets")).to be false
           end
         end
       end
@@ -541,25 +541,6 @@ describe Mongoid::Changeable do
       end
     end
 
-    context "when the attribute has changed from the default value" do
-
-      let(:person) do
-        Person.new
-      end
-
-      before do
-        person.pets = true
-      end
-
-      it "returns the default value" do
-        expect(person.send(:attribute_was, "pets")).to be_false
-      end
-
-      it "allows access via (attribute)_was" do
-        expect(person.pets_was).to be_false
-      end
-    end
-
     context "when the attribute has not changed from the persisted value" do
 
       let!(:person) do
@@ -568,17 +549,6 @@ describe Mongoid::Changeable do
 
       it "returns the original value" do
         expect(person.send(:attribute_was, "title")).to eq("Grand Poobah")
-      end
-    end
-
-    context "when the attribute has not changed from the default value" do
-
-      let(:person) do
-        Person.new
-      end
-
-      it "returns the default value" do
-        expect(person.send(:attribute_was, "pets")).to be_false
       end
     end
   end
@@ -1183,7 +1153,7 @@ describe Mongoid::Changeable do
     end
 
     it "defines a _changed? method" do
-      expect(document.updated_at_changed?).to be_false
+      expect(document.updated_at_changed?).to be false
     end
 
     it "defines a _changes method" do
@@ -1393,7 +1363,7 @@ describe Mongoid::Changeable do
     end
 
     it "marks the field as changed" do
-      expect(person.title_changed?).to be_true
+      expect(person.title_changed?).to be true
     end
 
     it "stores previous field values" do

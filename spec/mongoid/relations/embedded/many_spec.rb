@@ -1336,6 +1336,33 @@ describe Mongoid::Relations::Embedded::Many do
 
   describe "#create" do
 
+    context "when providing multiple attributes" do
+
+      let(:person) do
+        Person.create
+      end
+
+      let!(:addresses) do
+        person.addresses.create([{ street: "Bond" }, { street: "Upper" }])
+      end
+
+      it "creates multiple documents" do
+        expect(addresses.size).to eq(2)
+      end
+
+      it "sets the first attributes" do
+        expect(addresses.first.street).to eq("Bond")
+      end
+
+      it "sets the second attributes" do
+        expect(addresses.last.street).to eq("Upper")
+      end
+
+      it "persists the children" do
+        expect(person.addresses.count).to eq(2)
+      end
+    end
+
     context "when the relation is not cyclic" do
 
       let(:person) do
@@ -1416,6 +1443,29 @@ describe Mongoid::Relations::Embedded::Many do
 
     let(:person) do
       Person.create
+    end
+
+    context "when providing multiple attributes" do
+
+      let!(:addresses) do
+        person.addresses.create!([{ street: "Bond" }, { street: "Upper" }])
+      end
+
+      it "creates multiple documents" do
+        expect(addresses.size).to eq(2)
+      end
+
+      it "sets the first attributes" do
+        expect(addresses.first.street).to eq("Bond")
+      end
+
+      it "sets the second attributes" do
+        expect(addresses.last.street).to eq("Upper")
+      end
+
+      it "persists the children" do
+        expect(person.addresses.count).to eq(2)
+      end
     end
 
     context "when validation passes" do
@@ -1845,7 +1895,7 @@ describe Mongoid::Relations::Embedded::Many do
       end
 
       it "returns true" do
-        expect(person.addresses.exists?).to be_true
+        expect(person.addresses.exists?).to be true
       end
     end
 
@@ -1856,7 +1906,7 @@ describe Mongoid::Relations::Embedded::Many do
       end
 
       it "returns false" do
-        expect(person.addresses.exists?).to be_false
+        expect(person.addresses.exists?).to be false
       end
     end
   end
@@ -2439,7 +2489,7 @@ describe Mongoid::Relations::Embedded::Many do
       context "when checking #{method}" do
 
         it "returns true" do
-          expect(addresses.respond_to?(method)).to be_true
+          expect(addresses.respond_to?(method)).to be true
         end
       end
     end
@@ -2449,7 +2499,7 @@ describe Mongoid::Relations::Embedded::Many do
       context "when checking #{method}" do
 
         it "returns true" do
-          expect(addresses.respond_to?(method)).to be_true
+          expect(addresses.respond_to?(method)).to be true
         end
       end
     end
@@ -2459,7 +2509,7 @@ describe Mongoid::Relations::Embedded::Many do
       context "when checking #{method}" do
 
         it "returns true" do
-          expect(addresses.respond_to?(method)).to be_true
+          expect(addresses.respond_to?(method)).to be true
         end
       end
     end
@@ -2520,7 +2570,7 @@ describe Mongoid::Relations::Embedded::Many do
       end
 
       it "updates nothing" do
-        expect(person.addresses.update_all(street: "test")).to be_false
+        expect(person.addresses.update_all(street: "test")).to be false
       end
     end
 
@@ -2576,7 +2626,7 @@ describe Mongoid::Relations::Embedded::Many do
   describe ".validation_default" do
 
     it "returns true" do
-      expect(described_class.validation_default).to be_true
+      expect(described_class.validation_default).to be true
     end
   end
 
@@ -3482,11 +3532,11 @@ describe Mongoid::Relations::Embedded::Many do
       end
 
       it "executes the callback" do
-        expect(artist.before_add_called).to be_true
+        expect(artist.before_add_called).to be true
       end
 
       it "executes the callback as proc" do
-        expect(song.before_add_called).to be_true
+        expect(song.before_add_called).to be true
       end
 
       it "adds the document to the relation" do
@@ -3521,7 +3571,7 @@ describe Mongoid::Relations::Embedded::Many do
 
     it "executes the callback" do
       artist.labels << label
-      expect(artist.after_add_called).to be_true
+      expect(artist.after_add_called).to be true
     end
 
     context "when errors are raised" do
@@ -3562,7 +3612,7 @@ describe Mongoid::Relations::Embedded::Many do
         end
 
         it "executes the callback" do
-          expect(artist.before_remove_embedded_called).to be_true
+          expect(artist.before_remove_embedded_called).to be true
         end
 
         it "removes the document from the relation" do
@@ -3577,7 +3627,7 @@ describe Mongoid::Relations::Embedded::Many do
         end
 
         it "executes the callback" do
-          expect(artist.before_remove_embedded_called).to be_true
+          expect(artist.before_remove_embedded_called).to be true
         end
 
         it "shoud clear the relation" do
@@ -3636,7 +3686,7 @@ describe Mongoid::Relations::Embedded::Many do
         end
 
         it "executes the callback" do
-          expect(artist.after_remove_embedded_called).to be_true
+          expect(artist.after_remove_embedded_called).to be true
         end
       end
 
@@ -3648,7 +3698,7 @@ describe Mongoid::Relations::Embedded::Many do
 
         it "executes the callback" do
           artist.labels.clear
-          expect(artist.after_remove_embedded_called).to be_true
+          expect(artist.after_remove_embedded_called).to be true
         end
       end
     end

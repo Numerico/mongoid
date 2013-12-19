@@ -5,10 +5,8 @@ MODELS = File.join(File.dirname(__FILE__), "app/models")
 $LOAD_PATH.unshift(MODELS)
 
 if ENV["CI"]
-  require "simplecov"
   require "coveralls"
-  SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-  SimpleCov.start do
+  Coveralls.wear! do
     add_filter "spec"
   end
 end
@@ -90,7 +88,7 @@ ActiveSupport::Inflector.inflections do |inflect|
 end
 
 RSpec.configure do |config|
-  config.include Helpers
+  config.include Mongoid::SpecHelpers
 
   # Drop all collections and clear the identity map before each spec.
   config.before(:each) do
